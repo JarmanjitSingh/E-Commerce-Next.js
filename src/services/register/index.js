@@ -1,3 +1,21 @@
+// export const registerNewUser = async (formData) => {
+//   try {
+//     const response = await fetch("/api/register", {
+//       method: "POST",
+//       headers: {
+//         "content-type": "application/json",
+//       },
+//       body: JSON.stringify(formData),
+//     });
+
+//     const finalData = await response.json();
+
+//     return finalData;
+//   } catch (error) {
+//     console.log("error", error);
+//   }
+// };
+
 export const registerNewUser = async (formData) => {
   try {
     const response = await fetch("/api/register", {
@@ -8,10 +26,10 @@ export const registerNewUser = async (formData) => {
       body: JSON.stringify(formData),
     });
 
-    const finalData = response.json();
+    const finalData = await response.json();
 
     return finalData;
-  } catch (error) {
-    console.log("error", error);
+  } catch (e) {
+    console.log("error", e);
   }
 };

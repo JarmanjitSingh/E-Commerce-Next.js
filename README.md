@@ -21,3 +21,7 @@
 
 1. create a services folder inside it register folder inside it a index.js file
 2. here call the api route.
+
+# lets intigrate registration api with frontend 
+
+    

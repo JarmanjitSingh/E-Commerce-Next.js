@@ -2,11 +2,65 @@
 
 import InputComponent from "@/components/FormElements/InputComponent";
 import SelectComponent from "@/components/FormElements/SelectComponent";
+import ComponentLevelLoader from "@/components/Loader/componentlevel";
+import Notification from "@/components/Notification";
+import { GlobalContext } from "@/context";
+import { registerNewUser } from "@/services/register";
 import { registrationFormControls } from "@/utils";
+import { useRouter } from "next/navigation";
+import { useContext, useState } from "react";
+import { toast } from "react-toastify";
 
-const isRegistered = false;
+const initialFormData = {
+  name: "",
+  email: "",
+  password: "",
+  role: "customer",
+};
 
 export default function Register() {
+  const [formData, setFormData] = useState(initialFormData);
+  const [isRegistered, setIsRegistered] = useState(false)
+  const {commonLoader, setCommonLoader} = useContext(GlobalContext);
+
+  const router = useRouter()
+
+  function isFormValid() {
+    return formData &&
+      formData.name &&
+      formData.name.trim() !== "" &&
+      formData &&
+      formData.email &&
+      formData.email.trim() !== "" &&
+      formData &&
+      formData.password &&
+      formData.password.trim() !== ""
+      ? true
+      : false;
+  }
+
+  const handleRegisterOnSubmit = async() =>{
+    setCommonLoader(true)
+    const data = await registerNewUser(formData)
+
+    if(data.success){
+      toast.success(data.message, {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      setIsRegistered(true)
+      setCommonLoader(false)
+      setFormData(initialFormData)
+    }else{
+      toast.error(data.message, {
+        position: toast.POSITION.TOP_RIGHT
+      })
+      setCommonLoader(false)
+      setFormData(initialFormData)
+
+    }
+    console.log(data)
+  }
+
   return (
     <div className="bg-white relative">
       <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-8 mr-auto xl:px-5 lg:flex-row">
@@ -23,7 +77,7 @@ export default function Register() {
                   className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
                 text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                 "
-                  // onClick={()=>router.push('/login')}
+                  onClick={()=>router.push('/login')}
                 >
                   Login
                 </button>
@@ -35,25 +89,25 @@ export default function Register() {
                         type={controlItem.type}
                         placeholder={controlItem.placeholder}
                         label={controlItem.label}
-                        // onChange={(event) => {
-                        //   setFormData({
-                        //     ...formData,
-                        //     [controlItem.id]: event.target.value,
-                        //   });
-                        // }}
-                        // value={formData[controlItem.id]}
+                        onChange={(event) => {
+                          setFormData({
+                            ...formData,
+                            [controlItem.id]: event.target.value,
+                          });
+                        }}
+                        value={formData[controlItem.id]}
                       />
                     ) : controlItem.componentType === "select" ? (
                       <SelectComponent
                         options={controlItem.options}
                         label={controlItem.label}
-                        // onChange={(event) => {
-                        //   setFormData({
-                        //     ...formData,
-                        //     [controlItem.id]: event.target.value,
-                        //   });
-                        // }}
-                        // value={formData[controlItem.id]}
+                        onChange={(event) => {
+                          setFormData({
+                            ...formData,
+                            [controlItem.id]: event.target.value,
+                          });
+                        }}
+                        value={formData[controlItem.id]}
                       />
                     ) : null
                   )}
@@ -61,19 +115,18 @@ export default function Register() {
                     className=" disabled:opacity-50 inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg 
                text-white transition-all duration-200 ease-in-out focus:shadow font-medium uppercase tracking-wide
                "
-                    // disabled={!isFormValid()}
-                    // onClick={handleRegisterOnSubmit}
+                    disabled={!isFormValid()}
+                    onClick={handleRegisterOnSubmit}
                   >
-                    {/* {pageLevelLoader ? (
+                    {commonLoader ? (
                       <ComponentLevelLoader
                         text={"Registering"}
                         color={"#ffffff"}
-                        loading={pageLevelLoader}
+                        loading={commonLoader}
                       />
                     ) : (
                       "Register"
-                    )} */}
-                    Register
+                    )}  
                   </button>
                 </div>
               )}
@@ -81,6 +134,7 @@ export default function Register() {
           </div>
         </div>
       </div>
+      <Notification />
     </div>
   );
 }
