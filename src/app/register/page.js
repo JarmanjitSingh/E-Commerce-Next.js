@@ -8,7 +8,7 @@ import { GlobalContext } from "@/context";
 import { registerNewUser } from "@/services/register";
 import { registrationFormControls } from "@/utils";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const initialFormData = {
@@ -21,7 +21,7 @@ const initialFormData = {
 export default function Register() {
   const [formData, setFormData] = useState(initialFormData);
   const [isRegistered, setIsRegistered] = useState(false)
-  const {commonLoader, setCommonLoader} = useContext(GlobalContext);
+  const {isAuthUser, pageLevelLoader, setPageLevelLoader} = useContext(GlobalContext);
 
   const router = useRouter()
 
@@ -40,7 +40,7 @@ export default function Register() {
   }
 
   const handleRegisterOnSubmit = async() =>{
-    setCommonLoader(true)
+    setPageLevelLoader(true)
     const data = await registerNewUser(formData)
 
     if(data.success){
@@ -48,19 +48,24 @@ export default function Register() {
         position: toast.POSITION.TOP_RIGHT
       })
       setIsRegistered(true)
-      setCommonLoader(false)
+      setPageLevelLoader(false)
       setFormData(initialFormData)
     }else{
       toast.error(data.message, {
         position: toast.POSITION.TOP_RIGHT
       })
-      setCommonLoader(false)
+      setPageLevelLoader(false)
       setFormData(initialFormData)
 
     }
     console.log(data)
   }
 
+  useEffect(() => {
+    if (isAuthUser) {
+      router.push("/");
+    }
+  }, [isAuthUser]);
   return (
     <div className="bg-white relative">
       <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-8 mr-auto xl:px-5 lg:flex-row">
@@ -118,11 +123,11 @@ export default function Register() {
                     disabled={!isFormValid()}
                     onClick={handleRegisterOnSubmit}
                   >
-                    {commonLoader ? (
+                    {pageLevelLoader ? (
                       <ComponentLevelLoader
                         text={"Registering"}
                         color={"#ffffff"}
-                        loading={commonLoader}
+                        loading={pageLevelLoader}
                       />
                     ) : (
                       "Register"

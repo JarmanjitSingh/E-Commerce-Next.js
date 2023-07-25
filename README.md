@@ -1,3 +1,5 @@
+## REGISTERATION FUNCTIONALITY
+
 # connecting to db
 
 1. creating a folder named database and writing a function to connect a db.
@@ -23,5 +25,13 @@
 2. here call the api route.
 
 # lets intigrate registration api with frontend 
+
+## LOGIN FUNCTIONALITY
+
+1. creating route api for login
+2. create login service file
+3. sending the form data and calling the api from page of login folder
+4. set context authUser and userDetail and use these in the login page and we will storing the token in the cookies and user info in the localstorage
+5. in context use useEffect and fetch the data from the cookie and localstorage.
 
     

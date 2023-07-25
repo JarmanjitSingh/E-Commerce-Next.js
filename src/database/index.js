@@ -6,7 +6,7 @@ const configOptions = {
 };
 
 const connectToDB = async () => {
-  const connectionUrl = `mongodb+srv://jarmanjits176:nextjsEcommerce2023@cluster0.ulc1qxc.mongodb.net/`;
+  const connectionUrl = `${process.env.MONGO_URI}`;
 
   await mongoose
     .connect(connectionUrl, configOptions)
