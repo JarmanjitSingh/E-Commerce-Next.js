@@ -4,11 +4,10 @@ import { adminNavOptions, navOptions } from "@/utils";
 import React, { Fragment, useContext } from "react";
 import CommonModal from "../CommonModal";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
-const isAdminView = false;
 
-function NavItems({ isModalView }) {
+function NavItems({ isModalView=false , isAdminView, router }) {
   return (
     <div
       className={`items-center justify-between w-full md:flex md:w-auto ${
@@ -26,6 +25,7 @@ function NavItems({ isModalView }) {
               <li
                 className="cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
                 key={item.id}
+                onClick={()=> router.push(item.path)}
               >
                 {item.label}
               </li>
@@ -34,6 +34,7 @@ function NavItems({ isModalView }) {
               <li
                 className="cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
                 key={item.id}
+                onClick={()=> router.push(item.path)}
               >
                 {item.label}
               </li>
@@ -53,6 +54,7 @@ const Navbar = () => {
     setUser,
   } = useContext(GlobalContext);
   const router = useRouter();
+  const pathname = usePathname();
 
   function handleLogout() {
     setIsAuthUser(false);
@@ -62,12 +64,14 @@ const Navbar = () => {
     router.push("/");
   }
 
+  const isAdminView = pathname.includes("admin-view")
+
   return (
     <>
       <nav className="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <div className="flex item-center cursor-pointer">
-            <span className="self-center text-2xl font-semibold whitespace-nowrap">
+            <span onClick={()=> router.push("/")} className="self-center text-2xl font-semibold whitespace-nowrap">
               ECommercery
             </span>
           </div>
@@ -85,11 +89,11 @@ const Navbar = () => {
 
             {user?.role == "admin" ? (
               isAdminView ? (
-                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
+                <button onClick={()=> router.push("/")} className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
                   Client View
                 </button>
               ) : (
-                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
+                <button onClick={()=> router.push("/admin-view")} className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
                   Admin View
                 </button>
               )
@@ -132,7 +136,7 @@ const Navbar = () => {
               </svg>
             </button>
           </div>
-          <NavItems />
+          <NavItems isAdminView={isAdminView} router={router} />
         </div>
       </nav>
       <CommonModal
@@ -140,6 +144,7 @@ const Navbar = () => {
         mainContent={<NavItems isModalView={true} />}
         show={showNavModal}
         setShow={setShowNavModal}
+        isAdminView={isAdminView}
       />
     </>
   );
