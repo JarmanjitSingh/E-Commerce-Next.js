@@ -34,4 +34,16 @@
 4. set context authUser and userDetail and use these in the login page and we will storing the token in the cookies and user info in the localstorage
 5. in context use useEffect and fetch the data from the cookie and localstorage.
 
-    
+## Creating the backend for the new product addition
+
+1. create model schema, then create api route, then create services file.
+
+# Integrate firebase 
+
+1. create firebase new project and then it will give you the firebase sdk.
+2. from sdk you can copy firebaseConfig and paste it in the utils index.js
+3. from sdk copy intializeApp and paste it in the admin-view > add-proucts > page.js and import initializeApp
+
+4. In firebase :- go to console > Build > storage > get started > start in test mode > copy the link.
+5. go the utils index.js and store it variable and export it.
+6. in page.js make variable name storage and use getStorage function from firebase and pass it the storageURl

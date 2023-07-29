@@ -187,3 +187,17 @@ export const AvailableSizes = [
     label : 'L'
   }
 ]
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+export const firebaseConfig = {
+  apiKey: "AIzaSyARVcKF4DbBSD1MZn2hfNO2aaed275nhn8",
+  authDomain: "e-commerce-nextjs-2023.firebaseapp.com",
+  projectId: "e-commerce-nextjs-2023",
+  storageBucket: "e-commerce-nextjs-2023.appspot.com",
+  messagingSenderId: "410315260925",
+  appId: "1:410315260925:web:fd97d9ab34fff0296fcf94",
+  measurementId: "G-ZRBBFE38BQ"
+};
+
+export const firebaseStorageURL = 'gs://e-commerce-nextjs-2023.appspot.com'
