@@ -76,7 +76,7 @@ export async function POST(req) {
       });
     }
   } catch (error) {
-    console.log("lelelele", error);
+    console.log(error);
     return NextResponse.json({
       success: false,
       message: "Something Went wrong. while adding product!",

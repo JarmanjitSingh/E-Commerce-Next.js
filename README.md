@@ -47,3 +47,8 @@
 4. In firebase :- go to console > Build > storage > get started > start in test mode > copy the link.
 5. go the utils index.js and store it variable and export it.
 6. in page.js make variable name storage and use getStorage function from firebase and pass it the storageURl
+
+
+## Fetching all products from database
+
+note: when we making the get request then we need to give absolute url "api/dummy" is not working we need to give full url in case of get request.
