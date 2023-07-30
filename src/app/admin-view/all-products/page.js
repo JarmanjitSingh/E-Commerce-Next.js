@@ -1,11 +1,10 @@
+import CommonListing from '@/components/CommonListing'
 import React from 'react'
 
-const AdminAddNewProduct = () => {
+const AdminAllProducts = () => {
   return (
-    <div>
-      Admin view - all products 
-    </div>
+    <CommonListing />
   )
 }
 
-export default AdminAddNewProduct
+export default AdminAllProducts
