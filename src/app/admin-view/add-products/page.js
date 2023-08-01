@@ -9,7 +9,7 @@ import {
   firebaseConfig,
   firebaseStorageURL,
 } from "@/utils";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getDownloadURL,
@@ -17,7 +17,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { addNewProduct } from "@/services/product";
+import { addNewProduct, updateProduct } from "@/services/product";
 import { GlobalContext } from "@/context";
 import { toast } from "react-toastify";
 import Notification from "@/components/Notification";
@@ -70,9 +70,14 @@ const initialFormData = {
 
 const AdminAddNewProduct = () => {
   const [formData, setFormData] = useState(initialFormData);
-  const { componentLevelLoader, setComponentLevelLoader } =
-    useContext(GlobalContext);
+  const {
+    componentLevelLoader,
+    setComponentLevelLoader,
+    currentUpdatedProduct,
+    setCurrentUpdatedProduct,
+  } = useContext(GlobalContext);
 
+  console.log(currentUpdatedProduct);
   const router = useRouter();
 
   const handleImageChange = async (event) => {
@@ -110,7 +115,10 @@ const AdminAddNewProduct = () => {
   const handleAddProduct = async () => {
     setComponentLevelLoader({ loading: true, id: "" });
 
-    const res = await addNewProduct(formData);
+    const res =
+      currentUpdatedProduct !== null
+        ? await updateProduct(formData)
+        : await addNewProduct(formData);
     console.log(res);
 
     if (res.success) {
@@ -119,6 +127,7 @@ const AdminAddNewProduct = () => {
         position: toast.POSITION.TOP_RIGHT,
       });
       setFormData(initialFormData);
+      setCurrentUpdatedProduct(null)
 
       setTimeout(() => {
         router.push("/admin-view/all-products");
@@ -132,7 +141,10 @@ const AdminAddNewProduct = () => {
     }
   };
 
-  console.log(formData);
+  useEffect(() => {
+    if (currentUpdatedProduct !== null) setFormData(currentUpdatedProduct);
+  }, [currentUpdatedProduct]);
+  // console.log(formData);
   return (
     <div className="w-full mt-5 mr-0 mb-0 ml-0 relative">
       <div className="flex flex-col items-start justify-start p-10 bg-white shadow-2xl rounded-xl relative">
@@ -186,10 +198,12 @@ const AdminAddNewProduct = () => {
           >
             {componentLevelLoader && componentLevelLoader.loading ? (
               <ComponentLevelLoader
-                text={"Adding Product"}
+                text={currentUpdatedProduct !== null ? "Updating Product" : "Adding Product"}
                 color={"#ffffff"}
                 loading={componentLevelLoader && componentLevelLoader.loading}
               />
+            ) : currentUpdatedProduct !== null ? (
+              "Update Product"
             ) : (
               "Add Product"
             )}

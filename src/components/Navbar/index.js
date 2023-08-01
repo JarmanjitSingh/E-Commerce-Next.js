@@ -1,13 +1,12 @@
 "use client";
 import { GlobalContext } from "@/context";
 import { adminNavOptions, navOptions } from "@/utils";
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useEffect } from "react";
 import CommonModal from "../CommonModal";
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 
-
-function NavItems({ isModalView=false , isAdminView, router }) {
+function NavItems({ isModalView = false, isAdminView, router }) {
   return (
     <div
       className={`items-center justify-between w-full md:flex md:w-auto ${
@@ -25,7 +24,7 @@ function NavItems({ isModalView=false , isAdminView, router }) {
               <li
                 className="cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
                 key={item.id}
-                onClick={()=> router.push(item.path)}
+                onClick={() => router.push(item.path)}
               >
                 {item.label}
               </li>
@@ -34,7 +33,7 @@ function NavItems({ isModalView=false , isAdminView, router }) {
               <li
                 className="cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
                 key={item.id}
-                onClick={()=> router.push(item.path)}
+                onClick={() => router.push(item.path)}
               >
                 {item.label}
               </li>
@@ -52,6 +51,8 @@ const Navbar = () => {
     isAuthUser,
     setIsAuthUser,
     setUser,
+    currentUpdatedProduct,
+    setCurrentUpdatedProduct,
   } = useContext(GlobalContext);
   const router = useRouter();
   const pathname = usePathname();
@@ -64,14 +65,20 @@ const Navbar = () => {
     router.push("/");
   }
 
-  const isAdminView = pathname.includes("admin-view")
+  const isAdminView = pathname.includes("admin-view");
 
+  useEffect(() => {
+    if(pathname !== "/admin-view/add-products" && currentUpdatedProduct !== null) setCurrentUpdatedProduct(null)
+  }, [pathname]);
   return (
     <>
       <nav className="bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <div className="flex item-center cursor-pointer">
-            <span onClick={()=> router.push("/")} className="self-center text-2xl font-semibold whitespace-nowrap">
+            <span
+              onClick={() => router.push("/")}
+              className="self-center text-2xl font-semibold whitespace-nowrap"
+            >
               ECommercery
             </span>
           </div>
@@ -89,11 +96,17 @@ const Navbar = () => {
 
             {user?.role == "admin" ? (
               isAdminView ? (
-                <button onClick={()=> router.push("/")} className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
+                <button
+                  onClick={() => router.push("/")}
+                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                >
                   Client View
                 </button>
               ) : (
-                <button onClick={()=> router.push("/admin-view")} className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
+                <button
+                  onClick={() => router.push("/admin-view")}
+                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                >
                   Admin View
                 </button>
               )
@@ -107,7 +120,10 @@ const Navbar = () => {
                 Log Out
               </button>
             ) : (
-              <button onClick={()=> router.push("/login")} className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
+              <button
+                onClick={() => router.push("/login")}
+                className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+              >
                 Login
               </button>
             )}
