@@ -45,7 +45,7 @@ export const updateProduct = async (formData) => {
 
     const data = await res.json();
     return data;
-  } catch (error) { 
+  } catch (error) {
     console.log(error);
   }
 };
@@ -67,17 +67,36 @@ export const deleteProduct = async (id) => {
   }
 };
 
-export const productByCategory = async(id)=>{
+export const productByCategory = async (id) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/admin/product-by-category?id=${id}`, {
-      method: "GET",
-      cache: "no-store",
-    })
+    const res = await fetch(
+      `http://localhost:3000/api/admin/product-by-category?id=${id}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
 
     const data = await res.json();
-    return data
+    return data;
   } catch (error) {
-   console.log(error) 
+    console.log(error);
   }
+};
 
-}
+export const productById = async (id) => {
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/admin/product-by-id?id=${id}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
