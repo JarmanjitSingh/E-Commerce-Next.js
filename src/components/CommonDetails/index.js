@@ -42,7 +42,7 @@ export default function CommonDetails({ item }) {
             </div>
           </div>
         </div>
-        <div className="lg:col-span-2 lg:row-span-2 lg:row-end-2">
+        <div className="lg:col-span-2 lg:row-span-2 lg:row-end-2">  
           <h1 className="text-2xl font-bold text-gray-900">
             {item && item.name}
           </h1>

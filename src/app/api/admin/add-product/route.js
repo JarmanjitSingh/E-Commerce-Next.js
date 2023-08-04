@@ -1,4 +1,5 @@
 import connectToDB from "@/database";
+import AuthUser from "@/middleware/AuthUser";
 import Product from "@/models/product";
 import Joi from "joi";
 import { NextResponse } from "next/server";
@@ -18,11 +19,11 @@ const addNewProductSchema = Joi.object({
 export const dynamic = "force-dynamic";
 
 export async function POST(req) {
-  await connectToDB();
   try {
-    const user = "admin";
+    await connectToDB();
+    const isAuthUser = await AuthUser(req)
 
-    if (user === "admin") {
+    if (isAuthUser?.role === "admin") {
       const extractData = await req.json();
       const {
         name,
