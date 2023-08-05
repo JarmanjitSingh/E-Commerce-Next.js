@@ -14,6 +14,7 @@ const GlobalState = ({ children }) => {
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null);
   const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
+  const [showCartModal, setShowCartModal] = useState(false);
 
   useEffect(() => {
     console.log(Cookies.get("token"));
@@ -42,6 +43,8 @@ const GlobalState = ({ children }) => {
         setComponentLevelLoader,
         currentUpdatedProduct,
         setCurrentUpdatedProduct,
+        showCartModal,
+        setShowCartModal,
       }}
     >
       {children}
