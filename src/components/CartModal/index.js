@@ -6,10 +6,20 @@ import { GlobalContext } from "@/context";
 import { deleteFromCart, getAllCartItems } from "@/services/cart";
 import { toast } from "react-toastify";
 import ComponentLevelLoader from "../Loader/componentlevel";
+import { useRouter } from "next/navigation";
 
 const CartModal = () => {
-  const { showCartModal, setShowCartModal, user, cartItems, setCartItems, componentLevelLoader, setComponentLevelLoader } =
-    useContext(GlobalContext);
+  const {
+    showCartModal,
+    setShowCartModal,
+    user,
+    cartItems,
+    setCartItems,
+    componentLevelLoader,
+    setComponentLevelLoader,
+  } = useContext(GlobalContext);
+
+  const router = useRouter();
 
   async function extractAllCartItems() {
     const res = await getAllCartItems(user?._id);
@@ -23,7 +33,6 @@ const CartModal = () => {
       localStorage.setItem("cartItems", JSON.stringify(res.data)); //because we need this data on checkout page
     }
   }
-
 
   async function handleDeleteCartItem(getCartItemID) {
     setComponentLevelLoader({ loading: true, id: getCartItemID });
@@ -114,6 +123,10 @@ const CartModal = () => {
           <button
             type="button"
             className="mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+            onClick={() => {
+              router.push("/cart");
+              setShowCartModal(false);
+            }}
           >
             Go To Cart
           </button>

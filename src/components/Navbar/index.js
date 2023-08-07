@@ -54,7 +54,8 @@ const Navbar = () => {
     setUser,
     currentUpdatedProduct,
     setCurrentUpdatedProduct,
-    showCartModal
+    showCartModal,
+    setShowCartModal
   } = useContext(GlobalContext);
   const router = useRouter();
   const pathname = usePathname();
@@ -90,7 +91,7 @@ const Navbar = () => {
                 <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
                   Account
                 </button>
-                <button className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
+                <button onClick={()=> setShowCartModal(true)} className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white">
                   Cart
                 </button>
               </Fragment>
