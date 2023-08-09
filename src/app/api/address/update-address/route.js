@@ -1,6 +1,7 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Address from "@/models/address";
+import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 

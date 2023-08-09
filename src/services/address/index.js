@@ -20,7 +20,7 @@ export const addNewAddress = async (formData) => {
 
 export const fetchAllAddresses = async (id) => {
   try {
-    const res = await fetch(`/api/address/add-all-address?id=${id}`, {
+    const res = await fetch(`/api/address/get-all-address?id=${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -28,9 +28,10 @@ export const fetchAllAddresses = async (id) => {
     });
 
     const data = await res.json();
+
     return data;
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
   }
 };
 

@@ -1,6 +1,7 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Address from "@/models/address";
+import { NextResponse } from "next/server";
 
 
 
@@ -11,7 +12,7 @@ export async function GET(req){
     try {
         await connectToDB();
 
-        const {searchParams} = new URl(req.url);
+        const {searchParams} = new URL(req.url);
         const id = searchParams.get('id');
 
         if(!id){

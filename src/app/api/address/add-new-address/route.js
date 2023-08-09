@@ -2,6 +2,7 @@ import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Address from "@/models/address";
 import Joi from "joi";
+import { NextResponse } from "next/server";
 
 const AddNewAddress = Joi.object({
   fullName: Joi.string().required(),
