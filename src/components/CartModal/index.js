@@ -132,6 +132,10 @@ const CartModal = () => {
           </button>
           <button
             type="button"
+            onClick={()=> {
+              router.push('/checkout')
+              setShowCartModal(false)
+            }}
             disabled={cartItems && cartItems.length === 0}
             className="mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide disabled:opacity-50"
           >

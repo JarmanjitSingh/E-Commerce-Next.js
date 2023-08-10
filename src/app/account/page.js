@@ -11,6 +11,7 @@ import {
   updateAddress,
 } from "@/services/address";
 import { addNewAddressFormControls } from "@/utils";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -27,6 +28,8 @@ export default function Account() {
     setComponentLevelLoader,
     setPageLevelLoader,
   } = useContext(GlobalContext);
+
+  const router = useRouter()
 
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [currentEditedAddressId, setCurrentEditedAddressId] = useState(null);
