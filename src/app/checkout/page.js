@@ -3,6 +3,8 @@
 import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
 import { fetchAllAddresses } from "@/services/address";
+import { callStripeSession } from "@/services/stripe";
+import { loadStripe } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 
@@ -16,7 +18,12 @@ export default function Checkout() {
     setCheckoutFormData,
   } = useContext(GlobalContext);
   const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isOrderProcessing, setIsOrderProcessing] = useState(false);
   const router = useRouter();
+
+  const publishableKey =
+    "pk_test_51NfmnMSI9NRZGmRRwbGMlsger2uMIyOZ7ExSLkow3pz71f8s8EOfWcoDLwdmJNryd7TtFTxLpluYmgtl2HDKHWux00ruekX7z8";
+  const stripePromise = loadStripe(publishableKey);
 
   async function getAllAddresses() {
     const res = await fetchAllAddresses(user?._id);
@@ -27,14 +34,13 @@ export default function Checkout() {
   }
 
   function handleSelectedAddress(getAddress) {
-
-    if(getAddress._id === selectedAddress){
-        setSelectedAddress(null);
-        setCheckoutFormData({
-            ...checkoutFormData,
-            shippingAddress: {}
-        })
-        return
+    if (getAddress._id === selectedAddress) {
+      setSelectedAddress(null);
+      setCheckoutFormData({
+        ...checkoutFormData,
+        shippingAddress: {},
+      });
+      return;
     }
 
     setSelectedAddress(getAddress._id);
@@ -51,7 +57,33 @@ export default function Checkout() {
     });
   }
 
-  function handleCheckout() {}
+  async function handleCheckout() {
+    const stripe = await stripePromise;
+
+    const createLineItems = cartItems.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          images: [item.productId.imageUrl],
+          name: item.productId.name,
+        },
+        unit_amount: item.productId.price * 100,
+      },
+      quantity: 1,
+    }));
+
+    const res = await callStripeSession(createLineItems);
+
+    setIsOrderProcessing(true);
+    localStorage.setItem("stripe", true);
+    localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
+
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: res.id,
+    });
+
+    console.log(error);
+  }
 
   useEffect(() => {
     if (user !== null) getAllAddresses();
@@ -156,10 +188,10 @@ export default function Checkout() {
             </div>
             <div className="pb-10">
               <button
-                  disabled={
-                    (cartItems && cartItems.length === 0) ||
-                    Object.keys(checkoutFormData.shippingAddress).length === 0
-                  }
+                disabled={
+                  (cartItems && cartItems.length === 0) ||
+                  Object.keys(checkoutFormData.shippingAddress).length === 0
+                }
                 onClick={handleCheckout}
                 className="disabled:opacity-50 mt-5 mr-5 w-full  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
               >
