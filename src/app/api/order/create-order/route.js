@@ -9,6 +9,7 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 export async function POST(req){
+    console.log('hello')
     try {
         await connectToDB();
 
@@ -40,6 +41,7 @@ export async function POST(req){
         }
         
     } catch (error) {
+        console.log(error)
         return NextResponse.json({
             success: false,
             message: "Something went wrong! please try again later."

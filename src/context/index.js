@@ -48,6 +48,7 @@ const GlobalState = ({ children }) => {
       setUser(userData);
     } else {
       setIsAuthUser(false);
+      setUser({}) //unauthenticated user
     }
   }, [Cookies]);
 
