@@ -1,6 +1,7 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
 import Order from "@/models/order";
+import { NextResponse } from "next/server";
 
 
 
@@ -17,7 +18,7 @@ export async function GET(req){
             const {searchParams} = new URL(req.url);
             const id = searchParams.get('id')
 
-            const extractAllOrders = await Order.find({userId: id}).populate('orderItems.product')
+            const extractAllOrders = await Order.find({user: id}).populate('orderItems.product')
 
             if(extractAllOrders){
                 return NextResponse.json({
