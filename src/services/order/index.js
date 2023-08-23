@@ -21,7 +21,7 @@ export const createNewOrder = async (formData) => {
 
 export const getAllOrdersForUser = async (id) => {
   try {
-    const res = await fetch(`api/order/get-all-orders?id=${id}`, {
+    const res = await fetch(`/api/order/get-all-orders?id=${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -37,7 +37,7 @@ export const getAllOrdersForUser = async (id) => {
 
 export const getOrderDetailsForUser = async (id) => {
   try {
-    const res = await fetch(`api/order/order-details?id=${id}`, {
+    const res = await fetch(`/api/order/order-details?id=${id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
