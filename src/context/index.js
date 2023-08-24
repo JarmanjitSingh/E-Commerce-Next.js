@@ -69,7 +69,7 @@ const GlobalState = ({ children }) => {
 
   useEffect(() => {
     if (
-      pathname !== "register" &&
+      pathname !== "register" && pathname !== '/' &&
       user &&
       Object.keys(user).length === 0 &&
       protectedRoutes.includes(pathname) > -1

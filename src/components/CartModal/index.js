@@ -29,8 +29,26 @@ const CartModal = () => {
     console.log(res);
 
     if (res.success) {
-      setCartItems(res.data);
-      localStorage.setItem("cartItems", JSON.stringify(res.data)); //because we need this data on checkout page
+      const updatedData =
+      res.data && res.data.length
+        ? res.data.map((item) => ({
+            ...item,
+            productId: {
+              ...item.productId,
+              price:
+                item.productId.onSale === "yes"
+                  ? parseInt(
+                      (
+                        item.productId.price -
+                        item.productId.price * (item.productId.priceDrop / 100)
+                      ).toFixed(2)
+                    )
+                  : item.productId.price,
+            },
+          }))
+        : [];
+      setCartItems(updatedData);
+      localStorage.setItem("cartItems", JSON.stringify(updatedData)); //because we need this data on checkout page
     }
   }
 
