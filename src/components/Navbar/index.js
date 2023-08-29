@@ -7,7 +7,9 @@ import Cookies from "js-cookie";
 import { usePathname, useRouter } from "next/navigation";
 import CartModal from "../CartModal";
 
-function NavItems({ isModalView = false, isAdminView, router }) {
+function NavItems({ isModalView = false, isAdminView }) {
+
+  const router = useRouter()
   return (
     <div
       className={`items-center justify-between w-full md:flex md:w-auto ${
