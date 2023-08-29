@@ -20,7 +20,7 @@ export const addNewProduct = async (formData) => {
 
 export const getAllAdminProducts = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/admin/all-products", {
+    const res = await fetch(`https://e-commerce-next-js-bice.vercel.app/api/admin/all-products`, {
       method: "GET",
       cache: "no-store",
     });
@@ -70,7 +70,7 @@ export const deleteProduct = async (id) => {
 export const productByCategory = async (id) => {
   try {
     const res = await fetch(
-      `http://localhost:3000/api/admin/product-by-category?id=${id}`,
+      `https://e-commerce-next-js-bice.vercel.app/api/admin/product-by-category?id=${id}`,
       {
         method: "GET",
         cache: "no-store",
@@ -87,7 +87,7 @@ export const productByCategory = async (id) => {
 export const productById = async (id) => {
   try {
     const res = await fetch(
-      `http://localhost:3000/api/admin/product-by-id?id=${id}`,
+      `https://e-commerce-next-js-bice.vercel.app/api/admin/product-by-id?id=${id}`,
       {
         method: "GET",
         cache: "no-store",
